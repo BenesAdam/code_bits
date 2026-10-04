@@ -18,7 +18,8 @@ endforeach()
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/source")
 file(GLOB_RECURSE HEADER_FILES_H   "${INCLUDE_DIR}/*.h")
 file(GLOB_RECURSE HEADER_FILES_HPP "${INCLUDE_DIR}/*.hpp")
-set(ALL_HEADERS ${HEADER_FILES_H} ${HEADER_FILES_HPP})
+file(GLOB_RECURSE HEADER_FILES_INL "${INCLUDE_DIR}/*.inl")
+set(ALL_HEADERS ${HEADER_FILES_H} ${HEADER_FILES_HPP} ${HEADER_FILES_INL})
 set(ABSOLUTE_HEADER_DIR_LIST "")
 
 foreach(header IN LISTS ALL_HEADERS)
@@ -34,5 +35,5 @@ add_executable(example ${ABSOLUTE_SOURCE_LIST})
 target_include_directories(example PUBLIC ${ABSOLUTE_HEADER_DIR_LIST})
 
 ## Flags
-target_compile_options(example PUBLIC -std=c++14 -g -Wall -Wfloat-conversion)
+target_compile_options(example PUBLIC -std=c++17 -g -Wall -Wfloat-conversion)
 
