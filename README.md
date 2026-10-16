@@ -12,6 +12,7 @@ build system, no shared CI, no drama. Just code that does a thing, and a `make r
 
 | Folder          | What it is                                                                          |
 | --------------- | ----------------------------------------------------------------------------------- |
+| `bloom_filter`  | Not in the set? Guaranteed. In the set? Maybe.                                      |
 | `hyper_log_log` | Counts unique words in a book. Twice. Once exactly, once with statistics and vibes. |
 
 More folders will show up whenever the author has a new shower thought. The table above is not a promise
@@ -70,18 +71,23 @@ knowing or caring which one it's talking to. Polymorphism, but for word counting
 The sample inputs (Dracula, Moby Dick, Pride and Prejudice) live under `input/`. Pick your poison by editing
 the `text_path` in `source/main/main.cpp` — the current favorite is `moby_dick.txt`.
 
-### Build & run
+## `bloom_filter`
 
-```bash
-cd hyper_log_log
-make run
+> *"Why store the whole set when 'probably' is usually enough?"*
+
+The flagship liar. Give it a bunch of items, and it will tell you whether an item is in the set using a carefully engineered combination of hash functions, bit-twiddling, and optimism.
+
+**SetLookup** — the honest one. Stores every item and answers membership queries exactly. Accurate, predictable, and increasingly fond of consuming memory.
+
+**BloomFilter<N>** — the optimistic one. Hashes each item several times and flips a few bits in a compact bit array. When asked about an item, it checks those same bits: if any of them are missing, the item is definitely not in the set; if all of them are present, the item is... probably in the set. Emphasis on probably.
+
+
+The output is essentially a confidence test:
+
 ```
-
-### Neovim creature comforts
-
-There's a `lua/init.lua` in there for people whose editor is also their personality. It wires up
-`<leader>nc / <leader>ng / <leader>nb / <leader>nr` to the `make` commands and registers a
-codeLLDB debug configuration, so you can step through the 2¹⁶ buckets line by line at 2 a.m.
+Item "Alice" is contained.
+Item "Eve" is not contained.
+```
 
 ---
 
